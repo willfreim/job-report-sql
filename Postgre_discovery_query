@@ -7,7 +7,7 @@ SELECT
 FROM device d
 LEFT JOIN LATERAL (
    SELECT id, info, job_type, error_log, successful, create_time
-   FROM device_history_job
+   FROM device_history_job dhj
    WHERE d.id = device_id
      AND dhj.job_type = 'DISCOVERY'
    ORDER BY create_time DESC
