@@ -1,0 +1,20 @@
+SELECT
+  d.id,
+  z.name,
+  d.vendor,
+  d.type,
+  d.model,
+  dhj.job_type,
+  REPLACE(dhj.error_log, E'\r\n', ' ') AS error_log
+FROM device d
+LEFT JOIN LATERAL (
+  SELECT id, job_type, error_log, successful, create_time
+  FROM device_history_job dhj
+  WHERE d.id = device_id
+    AND job_type = 'BACKUP'
+  ORDER BY create_time DESC
+  LIMIT 1
+) dhj ON true
+LEFT JOIN zone z ON z.id = d.zone_id
+WHERE dhj.successful = FALSE
+  AND dhj.create_time > EXTRACT(EPOCH FROM (CURRENT_DATE - INTERVAL '7' DAY));
