@@ -1,9 +1,10 @@
 SELECT
   d.id,
-  z.name,
   d.vendor,
   d.type,
   d.model,
+  DATE_FORMAT(FROM_UNIXTIME(dhj.create_time), '%H:%i:%s %d.%m.%Y'),
+  z.name,
   dhj.job_type,
   REPLACE(dhj.error_log, '\r\n', ' ') AS error_log
 FROM device d
