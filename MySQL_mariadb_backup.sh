@@ -1,9 +1,10 @@
 mariadb --host=127.0.0.1 --user=will --database=unimusmdb --password --execute="SELECT \
   d.id AS \`Device ID\`, \
-  z.name AS Zone, \
   d.vendor AS \`Vendor\`, \
   d.type AS \`Type\`, \
   d.model AS \`Model\`, \
+  DATE_FORMAT(FROM_UNIXTIME(dhj.create_time), '%H:%i:%s %d.%m.%Y') AS \`Time\`, \
+  z.name AS Zone, \
   dhj.job_type AS \`Job type\`, \
   REPLACE(dhj.error_log, '\r\n', ' ') AS \`Error log\` \
 FROM device d \
